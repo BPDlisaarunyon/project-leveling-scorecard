@@ -9,19 +9,13 @@
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
     background: #ffffff;
-    color: #111827;
+    color: #1a1a1a;
     padding: 32px 24px;
   }
   #scorecard {
     max-width: 980px;
     margin: 0 auto;
     font-size: 14px;
-  }
-  #scorecard h1 {
-    font-size: 20px;
-    font-weight: 600;
-    color: #111827;
-    margin-bottom: 20px;
   }
   .sc-table {
     width: 100%;
@@ -30,96 +24,108 @@
   }
   .sc-table thead th {
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #6b7280;
-    padding: 0 8px 8px;
+    letter-spacing: 0.04em;
+    color: #8a8f98;
+    padding: 0 6px 10px;
     text-align: center;
   }
-  .sc-table thead th:first-child { text-align: left; }
+  .sc-table thead th:first-child { text-align: left; padding-left: 0; }
   .sc-table tbody tr td { vertical-align: middle; padding: 3px; }
   .sc-table tbody tr td:first-child {
-    font-weight: 600;
+    font-weight: 500;
     font-size: 13px;
-    color: #111827;
-    padding-right: 12px;
-    white-space: nowrap;
+    color: #1a1a1a;
+    padding: 10px 10px 10px 0;
     width: 190px;
+    line-height: 1.3;
   }
   .sc-table tbody tr td:last-child {
     text-align: center;
     font-size: 15px;
-    font-weight: 600;
-    color: #6b7280;
-    width: 52px;
+    font-weight: 500;
+    color: #8a8f98;
+    width: 58px;
   }
-  .sc-table tbody tr td:last-child.has-score { color: #111827; }
+  .sc-table tbody tr td:last-child.has-score { color: #1a1a1a; }
   .sc-cell {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 6px;
+    border: 0.5px solid #e4e4e7;
+    border-radius: 8px;
     padding: 10px 8px;
     text-align: center;
     font-size: 12px;
-    color: #6b7280;
+    color: #8a8f98;
     cursor: pointer;
-    line-height: 1.35;
+    line-height: 1.3;
     min-height: 44px;
-    transition: background 0.12s, border-color 0.12s, color 0.12s;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
     font-family: inherit;
     user-select: none;
+    -webkit-user-select: none;
   }
   .sc-cell:hover {
-    background: #f9fafb;
-    border-color: #d1d5db;
+    background: #f5f5f7;
+    border-color: #c8c8ce;
   }
   .sc-cell.selected {
     background: #eff6ff;
-    border-color: #3b82f6;
+    border-color: #93c5fd;
     color: #1d4ed8;
-    font-weight: 600;
+    font-weight: 500;
   }
   .sc-footer {
-    margin-top: 20px;
-    background: #f3f4f6;
+    margin-top: 16px;
+    background: #f5f5f7;
     border-radius: 10px;
     padding: 16px 20px;
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: 20px;
     flex-wrap: wrap;
   }
-  .sc-total-block { display: flex; flex-direction: column; align-items: center; min-width: 64px; }
-  .sc-total-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; margin-bottom: 4px; }
-  .sc-total-score { font-size: 30px; font-weight: 600; color: #111827; }
-  .sc-level-block { flex: 1; min-width: 200px; }
-  .sc-level-name { font-size: 18px; font-weight: 600; margin-bottom: 3px; }
-  .sc-level-name.l1 { color: #15803d; }
-  .sc-level-name.l2 { color: #b45309; }
-  .sc-level-name.l3 { color: #1d4ed8; }
-  .sc-level-name.l4 { color: #b91c1c; }
-  .sc-level-empty { font-size: 13px; color: #6b7280; }
-  .sc-ranges { font-size: 11px; color: #6b7280; line-height: 1.9; flex: 1; min-width: 200px; }
+  .sc-total-block { display: flex; flex-direction: column; align-items: center; min-width: 60px; }
+  .sc-total-label {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #8a8f98;
+    margin-bottom: 4px;
+  }
+  .sc-total-score { font-size: 28px; font-weight: 500; color: #1a1a1a; }
+  .sc-level-block { flex: 1; min-width: 180px; }
+  .sc-level-name { font-size: 18px; font-weight: 500; margin-bottom: 4px; }
+  .sc-level-name.l1 { color: #16a34a; }
+  .sc-level-name.l2 { color: #d97706; }
+  .sc-level-name.l3 { color: #2563eb; }
+  .sc-level-name.l4 { color: #dc2626; }
+  .sc-level-empty { font-size: 13px; color: #8a8f98; }
+  .sc-ranges { font-size: 11px; color: #8a8f98; line-height: 1.8; flex: 1; min-width: 180px; }
   .sc-reset {
     background: #ffffff;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
+    border: 0.5px solid #c8c8ce;
+    border-radius: 8px;
     padding: 8px 16px;
     font-size: 13px;
     cursor: pointer;
-    color: #111827;
+    color: #1a1a1a;
     font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 6px;
   }
-  .sc-reset:hover { background: #f3f4f6; }
-  .sc-note { font-size: 11px; color: #9ca3af; text-align: center; margin-top: 12px; }
+  .sc-reset:hover { background: #f5f5f7; }
+  .sc-note { font-size: 11px; color: #8a8f98; text-align: center; margin-top: 12px; }
 </style>
 </head>
 <body>
 <div id="scorecard">
-  <h1>Project Leveling Scorecard</h1>
   <table class="sc-table">
     <thead>
       <tr>
@@ -176,25 +182,27 @@
     tbody.innerHTML = '';
     dims.forEach(function (dim, i) {
       var tr = document.createElement('tr');
-      // Label cell
+
       var tdLabel = document.createElement('td');
       tdLabel.textContent = dim.label;
       tr.appendChild(tdLabel);
-      // Option cells
+
       dim.opts.forEach(function (opt, j) {
         var td = document.createElement('td');
         var btn = document.createElement('button');
         btn.className = 'sc-cell' + (sel[i] === j ? ' selected' : '');
         btn.textContent = opt;
         btn.setAttribute('type', 'button');
-        btn.addEventListener('click', function () {
-          sel[i] = (sel[i] === j) ? null : j;
-          render();
-        });
+        (function(ri, ci) {
+          btn.addEventListener('click', function () {
+            sel[ri] = (sel[ri] === ci) ? null : ci;
+            render();
+          });
+        })(i, j);
         td.appendChild(btn);
         tr.appendChild(td);
       });
-      // Score cell
+
       var tdScore = document.createElement('td');
       if (sel[i] !== null) {
         tdScore.className = 'has-score';
@@ -220,13 +228,13 @@
     var total = filled.reduce(function (a, v) { return a + v + 1; }, 0);
     totalEl.textContent = filled.length < dims.length ? total + '*' : total;
     var name, cls;
-    if      (total <= 18) { name = 'Level 1 — Production';    cls = 'l1'; }
-    else if (total <= 28) { name = 'Level 2 — Campaign';      cls = 'l2'; }
-    else if (total <= 38) { name = 'Level 3 — Strategic';     cls = 'l3'; }
+    if      (total <= 18) { name = 'Level 1 — Production';     cls = 'l1'; }
+    else if (total <= 28) { name = 'Level 2 — Campaign';       cls = 'l2'; }
+    else if (total <= 38) { name = 'Level 3 — Strategic';      cls = 'l3'; }
     else                  { name = 'Level 4 — Transformative'; cls = 'l4'; }
     var missing = dims.length - filled.length;
     var note = missing > 0
-      ? '<div style="font-size:12px;color:#6b7280;margin-top:4px;">' + missing + ' dimension' + (missing > 1 ? 's' : '') + ' not yet scored</div>'
+      ? '<div style="font-size:12px;color:#8a8f98;margin-top:4px;">' + missing + ' dimension' + (missing > 1 ? 's' : '') + ' not yet scored</div>'
       : '';
     levelEl.innerHTML = '<div class="sc-level-name ' + cls + '">' + name + '</div>' + note;
   }
