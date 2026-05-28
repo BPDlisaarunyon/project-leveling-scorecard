@@ -1,4 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Leveling Scorecard</title>
 <style>
+:root{
+  --color-text-primary:#111827;
+  --color-text-secondary:#6b7280;
+  --color-text-info:#1d4ed8;
+  --color-text-success:#15803d;
+  --color-text-warning:#b45309;
+  --color-text-danger:#b91c1c;
+  --color-background-primary:#ffffff;
+  --color-background-secondary:#f3f4f6;
+  --color-background-info:#eff6ff;
+  --color-border-tertiary:#e5e7eb;
+  --color-border-secondary:#d1d5db;
+  --color-border-info:#93c5fd;
+  --border-radius-md:6px;
+  --border-radius-lg:10px;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#fff;padding:24px;max-width:960px;margin:0 auto;}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
 *{box-sizing:border-box;margin:0;padding:0}
 .scorer{padding:1.5rem 0;font-size:14px;color:var(--color-text-primary)}
@@ -28,7 +51,8 @@
 .reset-btn:hover{background:var(--color-background-secondary)}
 .note{font-size:11px;color:var(--color-text-secondary);text-align:center;margin-top:12px}
 </style>
-
+</head>
+<body>
 <h2 class="sr-only">Project complexity scoring tool — select a level for each dimension to calculate total score and project level.</h2>
 <div class="scorer">
   <div class="header-row">
@@ -54,7 +78,7 @@
       29–38 → Level 3 — Strategic<br>
       39–48 → Level 4 — Transformative
     </div>
-    <button class="reset-btn" onclick="resetAll()"><i class="ti ti-refresh" aria-hidden="true"></i> Reset</button>
+    <button class="reset-btn" onclick="resetAll()">↺ Reset</button>
   </div>
   <div class="note">If a project lands on the border → default up, not down.</div>
 </div>
@@ -124,3 +148,5 @@ function resetAll(){selections.fill(null);render();}
 
 render();
 </script>
+</body>
+</html>
