@@ -5,148 +5,239 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Project Leveling Scorecard</title>
 <style>
-:root{
-  --color-text-primary:#111827;
-  --color-text-secondary:#6b7280;
-  --color-text-info:#1d4ed8;
-  --color-text-success:#15803d;
-  --color-text-warning:#b45309;
-  --color-text-danger:#b91c1c;
-  --color-background-primary:#ffffff;
-  --color-background-secondary:#f3f4f6;
-  --color-background-info:#eff6ff;
-  --color-border-tertiary:#e5e7eb;
-  --color-border-secondary:#d1d5db;
-  --color-border-info:#93c5fd;
-  --border-radius-md:6px;
-  --border-radius-lg:10px;
-}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#fff;padding:24px;max-width:960px;margin:0 auto;}
-.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
-*{box-sizing:border-box;margin:0;padding:0}
-.scorer{padding:1.5rem 0;font-size:14px;color:var(--color-text-primary)}
-.header-row{display:grid;grid-template-columns:180px repeat(4,1fr) 70px;gap:6px;margin-bottom:8px;padding:0 2px}
-.header-cell{font-size:11px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.04em;text-align:center}
-.header-cell:first-child{text-align:left}
-.row{display:grid;grid-template-columns:180px repeat(4,1fr) 70px;gap:6px;margin-bottom:6px;align-items:center}
-.row-label{font-weight:500;font-size:13px;color:var(--color-text-primary);padding:10px 10px 10px 0;line-height:1.3}
-.cell{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px 8px;text-align:center;font-size:12px;color:var(--color-text-secondary);cursor:pointer;transition:border-color .15s,background .15s;line-height:1.3;min-height:44px;display:flex;align-items:center;justify-content:center}
-.cell:hover{border-color:var(--color-border-secondary);background:var(--color-background-secondary)}
-.cell.selected{background:var(--color-background-info);border-color:var(--color-border-info);color:var(--color-text-info);font-weight:500}
-.score-cell{text-align:center;font-size:15px;font-weight:500;color:var(--color-text-secondary)}
-.score-cell.filled{color:var(--color-text-primary)}
-.footer{margin-top:16px;background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:16px 20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
-.total-block{display:flex;flex-direction:column;align-items:center;min-width:60px}
-.total-label{font-size:11px;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
-.total-score{font-size:28px;font-weight:500;color:var(--color-text-primary)}
-.level-block{flex:1;min-width:180px}
-.level-name{font-size:18px;font-weight:500;margin-bottom:4px}
-.level-name.l1{color:var(--color-text-success)}
-.level-name.l2{color:var(--color-text-warning)}
-.level-name.l3{color:var(--color-text-info)}
-.level-name.l4{color:var(--color-text-danger)}
-.level-empty{font-size:13px;color:var(--color-text-secondary)}
-.ranges{font-size:11px;color:var(--color-text-secondary);line-height:1.8;flex:1;min-width:180px}
-.reset-btn{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:8px 16px;font-size:13px;cursor:pointer;color:var(--color-text-primary);display:flex;align-items:center;gap:6px}
-.reset-btn:hover{background:var(--color-background-secondary)}
-.note{font-size:11px;color:var(--color-text-secondary);text-align:center;margin-top:12px}
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    background: #ffffff;
+    color: #111827;
+    padding: 32px 24px;
+  }
+  #scorecard {
+    max-width: 980px;
+    margin: 0 auto;
+    font-size: 14px;
+  }
+  #scorecard h1 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 20px;
+  }
+  .sc-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 5px;
+  }
+  .sc-table thead th {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6b7280;
+    padding: 0 8px 8px;
+    text-align: center;
+  }
+  .sc-table thead th:first-child { text-align: left; }
+  .sc-table tbody tr td { vertical-align: middle; padding: 3px; }
+  .sc-table tbody tr td:first-child {
+    font-weight: 600;
+    font-size: 13px;
+    color: #111827;
+    padding-right: 12px;
+    white-space: nowrap;
+    width: 190px;
+  }
+  .sc-table tbody tr td:last-child {
+    text-align: center;
+    font-size: 15px;
+    font-weight: 600;
+    color: #6b7280;
+    width: 52px;
+  }
+  .sc-table tbody tr td:last-child.has-score { color: #111827; }
+  .sc-cell {
+    display: block;
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 10px 8px;
+    text-align: center;
+    font-size: 12px;
+    color: #6b7280;
+    cursor: pointer;
+    line-height: 1.35;
+    min-height: 44px;
+    transition: background 0.12s, border-color 0.12s, color 0.12s;
+    font-family: inherit;
+    user-select: none;
+  }
+  .sc-cell:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+  }
+  .sc-cell.selected {
+    background: #eff6ff;
+    border-color: #3b82f6;
+    color: #1d4ed8;
+    font-weight: 600;
+  }
+  .sc-footer {
+    margin-top: 20px;
+    background: #f3f4f6;
+    border-radius: 10px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .sc-total-block { display: flex; flex-direction: column; align-items: center; min-width: 64px; }
+  .sc-total-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; margin-bottom: 4px; }
+  .sc-total-score { font-size: 30px; font-weight: 600; color: #111827; }
+  .sc-level-block { flex: 1; min-width: 200px; }
+  .sc-level-name { font-size: 18px; font-weight: 600; margin-bottom: 3px; }
+  .sc-level-name.l1 { color: #15803d; }
+  .sc-level-name.l2 { color: #b45309; }
+  .sc-level-name.l3 { color: #1d4ed8; }
+  .sc-level-name.l4 { color: #b91c1c; }
+  .sc-level-empty { font-size: 13px; color: #6b7280; }
+  .sc-ranges { font-size: 11px; color: #6b7280; line-height: 1.9; flex: 1; min-width: 200px; }
+  .sc-reset {
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 13px;
+    cursor: pointer;
+    color: #111827;
+    font-family: inherit;
+  }
+  .sc-reset:hover { background: #f3f4f6; }
+  .sc-note { font-size: 11px; color: #9ca3af; text-align: center; margin-top: 12px; }
 </style>
 </head>
 <body>
-<h2 class="sr-only">Project complexity scoring tool — select a level for each dimension to calculate total score and project level.</h2>
-<div class="scorer">
-  <div class="header-row">
-    <div class="header-cell"></div>
-    <div class="header-cell">1 — Very low</div>
-    <div class="header-cell">2 — Low–moderate</div>
-    <div class="header-cell">3 — High</div>
-    <div class="header-cell">4 — Very high</div>
-    <div class="header-cell">Score</div>
+<div id="scorecard">
+  <h1>Project Leveling Scorecard</h1>
+  <table class="sc-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>1 — Very low</th>
+        <th>2 — Low–moderate</th>
+        <th>3 — High</th>
+        <th>4 — Very high</th>
+        <th>Score</th>
+      </tr>
+    </thead>
+    <tbody id="sc-body"></tbody>
+  </table>
+  <div class="sc-footer">
+    <div class="sc-total-block">
+      <div class="sc-total-label">Total score</div>
+      <div class="sc-total-score" id="sc-total">—</div>
+    </div>
+    <div class="sc-level-block" id="sc-level">
+      <div class="sc-level-empty">Score to see level</div>
+    </div>
+    <div class="sc-ranges">
+      12–18 &rarr; Level 1 — Production<br>
+      19–28 &rarr; Level 2 — Campaign<br>
+      29–38 &rarr; Level 3 — Strategic<br>
+      39–48 &rarr; Level 4 — Transformative
+    </div>
+    <button class="sc-reset" id="sc-reset-btn">&#8635; Reset</button>
   </div>
-  <div id="rows"></div>
-  <div class="footer">
-    <div class="total-block">
-      <div class="total-label">Total score</div>
-      <div class="total-score" id="total-score">—</div>
-    </div>
-    <div class="level-block" id="level-block">
-      <div class="level-empty">Score to see level</div>
-    </div>
-    <div class="ranges">
-      12–18 → Level 1 — Production<br>
-      19–28 → Level 2 — Campaign<br>
-      29–38 → Level 3 — Strategic<br>
-      39–48 → Level 4 — Transformative
-    </div>
-    <button class="reset-btn" onclick="resetAll()">↺ Reset</button>
-  </div>
-  <div class="note">If a project lands on the border → default up, not down.</div>
+  <div class="sc-note">If a project lands on the border &rarr; default up, not down.</div>
 </div>
 
 <script>
-const dimensions=[
-  {label:"Strategic thinking required",options:["Execution only","Some thinking","Strategic framing","Business transformation"]},
-  {label:"Creative complexity",options:["Simple edits","Moderate customization","Custom concepts","Foundational system"]},
-  {label:"Net-new concepting",options:["None","Light","Yes","Extensive"]},
-  {label:"Stakeholder count",options:["2–4","2–6","4–6+","6–10+"]},
-  {label:"Decision complexity (BPD)",options:["1","2–4","5–6","7+"]},
-  {label:"Decision complexity (client)",options:["1–2","2–4","5–6","7+"]},
-  {label:"Revision expectation",options:["1–2 rounds","2–3 rounds","3–4 rounds","4+ rounds"]},
-  {label:"Timeline pressure",options:["Flexible","Moderate","Tight","Unrealistic"]},
-  {label:"Scope volatility risk",options:["Locked","Some risk","Likely changes","Guaranteed"]},
-  {label:"Visibility / impact",options:["Low","Moderate","High","Very high"]},
-  {label:"PM complexity",options:["Light tracking","Standard","Multi-stream","Program-level"]},
-  {label:"Creative staffing level",options:["Maker","Lead + maker","CD-led","Multi-CD / exec"]},
-];
+(function () {
+  var dims = [
+    { label: "Strategic thinking required", opts: ["Execution only", "Some thinking", "Strategic framing", "Business transformation"] },
+    { label: "Creative complexity",          opts: ["Simple edits", "Moderate customization", "Custom concepts", "Foundational system"] },
+    { label: "Net-new concepting",           opts: ["None", "Light", "Yes", "Extensive"] },
+    { label: "Stakeholder count",            opts: ["2–4", "2–6", "4–6+", "6–10+"] },
+    { label: "Decision complexity (BPD)",    opts: ["1", "2–4", "5–6", "7+"] },
+    { label: "Decision complexity (client)", opts: ["1–2", "2–4", "5–6", "7+"] },
+    { label: "Revision expectation",         opts: ["1–2 rounds", "2–3 rounds", "3–4 rounds", "4+ rounds"] },
+    { label: "Timeline pressure",            opts: ["Flexible", "Moderate", "Tight", "Unrealistic"] },
+    { label: "Scope volatility risk",        opts: ["Locked", "Some risk", "Likely changes", "Guaranteed"] },
+    { label: "Visibility / impact",          opts: ["Low", "Moderate", "High", "Very high"] },
+    { label: "PM complexity",                opts: ["Light tracking", "Standard", "Multi-stream", "Program-level"] },
+    { label: "Creative staffing level",      opts: ["Maker", "Lead + maker", "CD-led", "Multi-CD / exec"] },
+  ];
 
-const selections=new Array(dimensions.length).fill(null);
+  var sel = dims.map(function () { return null; });
 
-function render(){
-  const container=document.getElementById('rows');
-  container.innerHTML='';
-  dimensions.forEach((dim,i)=>{
-    const row=document.createElement('div');
-    row.className='row';
-    const lbl=document.createElement('div');
-    lbl.className='row-label';
-    lbl.textContent=dim.label;
-    row.appendChild(lbl);
-    dim.options.forEach((opt,j)=>{
-      const cell=document.createElement('div');
-      cell.className='cell'+(selections[i]===j?' selected':'');
-      cell.textContent=opt;
-      cell.onclick=()=>{selections[i]=(selections[i]===j?null:j);update();render();}
-      row.appendChild(cell);
+  function render() {
+    var tbody = document.getElementById('sc-body');
+    tbody.innerHTML = '';
+    dims.forEach(function (dim, i) {
+      var tr = document.createElement('tr');
+      // Label cell
+      var tdLabel = document.createElement('td');
+      tdLabel.textContent = dim.label;
+      tr.appendChild(tdLabel);
+      // Option cells
+      dim.opts.forEach(function (opt, j) {
+        var td = document.createElement('td');
+        var btn = document.createElement('button');
+        btn.className = 'sc-cell' + (sel[i] === j ? ' selected' : '');
+        btn.textContent = opt;
+        btn.setAttribute('type', 'button');
+        btn.addEventListener('click', function () {
+          sel[i] = (sel[i] === j) ? null : j;
+          render();
+        });
+        td.appendChild(btn);
+        tr.appendChild(td);
+      });
+      // Score cell
+      var tdScore = document.createElement('td');
+      if (sel[i] !== null) {
+        tdScore.className = 'has-score';
+        tdScore.textContent = sel[i] + 1;
+      } else {
+        tdScore.textContent = '—';
+      }
+      tr.appendChild(tdScore);
+      tbody.appendChild(tr);
     });
-    const sc=document.createElement('div');
-    sc.className='score-cell'+(selections[i]!==null?' filled':'');
-    sc.textContent=selections[i]!==null?(selections[i]+1):'—';
-    row.appendChild(sc);
-    container.appendChild(row);
+    update();
+  }
+
+  function update() {
+    var filled = sel.filter(function (s) { return s !== null; });
+    var totalEl = document.getElementById('sc-total');
+    var levelEl = document.getElementById('sc-level');
+    if (filled.length === 0) {
+      totalEl.textContent = '—';
+      levelEl.innerHTML = '<div class="sc-level-empty">Score to see level</div>';
+      return;
+    }
+    var total = filled.reduce(function (a, v) { return a + v + 1; }, 0);
+    totalEl.textContent = filled.length < dims.length ? total + '*' : total;
+    var name, cls;
+    if      (total <= 18) { name = 'Level 1 — Production';    cls = 'l1'; }
+    else if (total <= 28) { name = 'Level 2 — Campaign';      cls = 'l2'; }
+    else if (total <= 38) { name = 'Level 3 — Strategic';     cls = 'l3'; }
+    else                  { name = 'Level 4 — Transformative'; cls = 'l4'; }
+    var missing = dims.length - filled.length;
+    var note = missing > 0
+      ? '<div style="font-size:12px;color:#6b7280;margin-top:4px;">' + missing + ' dimension' + (missing > 1 ? 's' : '') + ' not yet scored</div>'
+      : '';
+    levelEl.innerHTML = '<div class="sc-level-name ' + cls + '">' + name + '</div>' + note;
+  }
+
+  document.getElementById('sc-reset-btn').addEventListener('click', function () {
+    sel = dims.map(function () { return null; });
+    render();
   });
-  update();
-}
 
-function update(){
-  const filled=selections.filter(s=>s!==null);
-  const ts=document.getElementById('total-score');
-  const lb=document.getElementById('level-block');
-  if(filled.length===0){ts.textContent='—';lb.innerHTML='<div class="level-empty">Score to see level</div>';return;}
-  const total=filled.reduce((a,v)=>a+v+1,0);
-  ts.textContent=filled.length<dimensions.length?total+'*':total;
-  let name='',cls='';
-  if(total<=18){name='Level 1 — Production';cls='l1';}
-  else if(total<=28){name='Level 2 — Campaign';cls='l2';}
-  else if(total<=38){name='Level 3 — Strategic';cls='l3';}
-  else{name='Level 4 — Transformative';cls='l4';}
-  const missing=dimensions.length-filled.length;
-  const note=missing>0?`<div style="font-size:12px;color:var(--color-text-secondary);margin-top:4px;">${missing} dimension${missing>1?'s':''} not yet scored</div>`:'';
-  lb.innerHTML=`<div class="level-name ${cls}">${name}</div>${note}`;
-}
-
-function resetAll(){selections.fill(null);render();}
-
-render();
+  render();
+})();
 </script>
 </body>
 </html>
