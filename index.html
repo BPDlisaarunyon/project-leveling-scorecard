@@ -305,9 +305,9 @@
       <div class="level-empty">Select dimensions to score</div>
     </div>
     <div class="ranges">
-      <span class="r1">12–18</span> Level 1 — Production<br>
-      <span class="r2">19–28</span> Level 2 — Campaign<br>
-      <span class="r3">29–38</span> Level 3 — Strategic<br>
+      <span class="r1">12–18</span> Level 1 — Lean (Production)<br>
+      <span class="r2">19–28</span> Level 2 — Tailored<br>
+      <span class="r3">29–38</span> Level 3 — Immersive<br>
       <span class="r4">39–48</span> Level 4 — Transformative
     </div>
     <button class="reset-btn" onclick="resetAll()">↺ Reset</button>
@@ -381,10 +381,10 @@ function update() {
   ts.textContent = filled.length < dimensions.length ? total + '*' : total;
 
   let name = '', cls = '';
-  if      (total <= 18) { name = 'Level 1 — Production';    cls = 'l1'; }
-  else if (total <= 28) { name = 'Level 2 — Campaign';      cls = 'l2'; }
-  else if (total <= 38) { name = 'Level 3 — Strategic';     cls = 'l3'; }
-  else                  { name = 'Level 4 — Transformative'; cls = 'l4'; }
+  if      (total <= 18) { name = 'Level 1 — Lean (Production)'; cls = 'l1'; }
+  else if (total <= 28) { name = 'Level 2 — Tailored';          cls = 'l2'; }
+  else if (total <= 38) { name = 'Level 3 — Immersive';         cls = 'l3'; }
+  else                  { name = 'Level 4 — Transformative';    cls = 'l4'; }
 
   const missing = dimensions.length - filled.length;
   const note = missing > 0
