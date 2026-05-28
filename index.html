@@ -1,36 +1,290 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Leveling Scorecard</title>
 <style>
-.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
-*{box-sizing:border-box;margin:0;padding:0}
-.scorer{padding:1.5rem 0;font-size:14px;color:var(--color-text-primary)}
-.header-row{display:grid;grid-template-columns:180px repeat(4,1fr) 70px;gap:6px;margin-bottom:8px;padding:0 2px}
-.header-cell{font-size:11px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.04em;text-align:center}
-.header-cell:first-child{text-align:left}
-.row{display:grid;grid-template-columns:180px repeat(4,1fr) 70px;gap:6px;margin-bottom:6px;align-items:center}
-.row-label{font-weight:500;font-size:13px;color:var(--color-text-primary);padding:10px 10px 10px 0;line-height:1.3}
-.cell{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px 8px;text-align:center;font-size:12px;color:var(--color-text-secondary);cursor:pointer;transition:border-color .15s,background .15s;line-height:1.3;min-height:44px;display:flex;align-items:center;justify-content:center}
-.cell:hover{border-color:var(--color-border-secondary);background:var(--color-background-secondary)}
-.cell.selected{background:var(--color-background-info);border-color:var(--color-border-info);color:var(--color-text-info);font-weight:500}
-.score-cell{text-align:center;font-size:15px;font-weight:500;color:var(--color-text-secondary)}
-.score-cell.filled{color:var(--color-text-primary)}
-.footer{margin-top:16px;background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:16px 20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
-.total-block{display:flex;flex-direction:column;align-items:center;min-width:60px}
-.total-label{font-size:11px;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
-.total-score{font-size:28px;font-weight:500;color:var(--color-text-primary)}
-.level-block{flex:1;min-width:180px}
-.level-name{font-size:18px;font-weight:500;margin-bottom:4px}
-.level-name.l1{color:var(--color-text-success)}
-.level-name.l2{color:var(--color-text-warning)}
-.level-name.l3{color:var(--color-text-info)}
-.level-name.l4{color:var(--color-text-danger)}
-.level-empty{font-size:13px;color:var(--color-text-secondary)}
-.ranges{font-size:11px;color:var(--color-text-secondary);line-height:1.8;flex:1;min-width:180px}
-.reset-btn{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:8px 16px;font-size:13px;cursor:pointer;color:var(--color-text-primary);display:flex;align-items:center;gap:6px}
-.reset-btn:hover{background:var(--color-background-secondary)}
-.note{font-size:11px;color:var(--color-text-secondary);text-align:center;margin-top:12px}
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f7f6f3;
+    --surface: #ffffff;
+    --surface-hover: #f0efe9;
+    --border: #e0ddd6;
+    --border-strong: #c8c4bb;
+    --text-primary: #1a1916;
+    --text-secondary: #6b6860;
+    --text-muted: #9e9b96;
+    --accent-green: #1a7a4a;
+    --accent-green-bg: #eaf5ee;
+    --accent-green-border: #a8d9bb;
+    --accent-amber: #8a5a00;
+    --accent-amber-bg: #fdf4e3;
+    --accent-amber-border: #e8c87a;
+    --accent-blue: #1a4f8a;
+    --accent-blue-bg: #e8f0fb;
+    --accent-blue-border: #9ab8e8;
+    --accent-red: #8a1a1a;
+    --accent-red-bg: #faeaea;
+    --accent-red-border: #e8a0a0;
+    --selected-bg: #e8f0fb;
+    --selected-border: #4a7fc1;
+    --selected-text: #1a3f6f;
+    --radius: 6px;
+    --radius-lg: 10px;
+  }
+
+  body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 32px 24px 48px;
+  }
+
+  .page-header {
+    max-width: 1100px;
+    margin: 0 auto 28px;
+  }
+
+  .page-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+  }
+
+  .page-subtitle {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .scorer {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .header-row {
+    display: grid;
+    grid-template-columns: 200px repeat(4, 1fr) 64px;
+    gap: 6px;
+    margin-bottom: 8px;
+    padding: 0 2px;
+  }
+
+  .header-cell {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    text-align: center;
+    padding: 4px 0;
+  }
+
+  .header-cell:first-child { text-align: left; }
+
+  .row {
+    display: grid;
+    grid-template-columns: 200px repeat(4, 1fr) 64px;
+    gap: 6px;
+    margin-bottom: 5px;
+    align-items: stretch;
+  }
+
+  .row-label {
+    font-weight: 500;
+    font-size: 13px;
+    color: var(--text-primary);
+    padding: 10px 12px 10px 0;
+    line-height: 1.35;
+    display: flex;
+    align-items: center;
+  }
+
+  .cell {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 9px 8px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: border-color .12s, background .12s, color .12s;
+    line-height: 1.3;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+  }
+
+  .cell:hover {
+    border-color: var(--border-strong);
+    background: var(--surface-hover);
+  }
+
+  .cell.selected {
+    background: var(--selected-bg);
+    border-color: var(--selected-border);
+    color: var(--selected-text);
+    font-weight: 600;
+  }
+
+  .score-cell {
+    text-align: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .score-cell.filled { color: var(--text-primary); }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 10px 0;
+    grid-column: 1 / -1;
+  }
+
+  .footer {
+    margin-top: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .total-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 64px;
+  }
+
+  .total-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin-bottom: 5px;
+  }
+
+  .total-score {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 36px;
+    font-weight: 500;
+    color: var(--text-primary);
+    line-height: 1;
+  }
+
+  .sep {
+    width: 1px;
+    height: 48px;
+    background: var(--border);
+    flex-shrink: 0;
+  }
+
+  .level-block { flex: 1; min-width: 180px; }
+
+  .level-name {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+
+  .level-name.l1 { color: var(--accent-green); }
+  .level-name.l2 { color: var(--accent-amber); }
+  .level-name.l3 { color: var(--accent-blue); }
+  .level-name.l4 { color: var(--accent-red); }
+
+  .level-empty { font-size: 13px; color: var(--text-muted); }
+
+  .level-note { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+
+  .ranges {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--text-secondary);
+    line-height: 2;
+    flex: 1;
+    min-width: 180px;
+  }
+
+  .ranges span {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-right: 4px;
+    font-weight: 500;
+  }
+
+  .r1 { background: var(--accent-green-bg); color: var(--accent-green); }
+  .r2 { background: var(--accent-amber-bg); color: var(--accent-amber); }
+  .r3 { background: var(--accent-blue-bg); color: var(--accent-blue); }
+  .r4 { background: var(--accent-red-bg); color: var(--accent-red); }
+
+  .reset-btn {
+    background: var(--bg);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    padding: 9px 16px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background .12s, color .12s;
+    flex-shrink: 0;
+  }
+
+  .reset-btn:hover { background: var(--surface-hover); color: var(--text-primary); }
+
+  .note {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 14px;
+    font-style: italic;
+  }
+
+  .sr-only {
+    position: absolute; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0,0,0,0); border: 0;
+  }
 </style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">BPD Creative</div>
+  <div class="page-subtitle">Project Leveling Scorecard</div>
+</div>
 
 <h2 class="sr-only">Project complexity scoring tool — select a level for each dimension to calculate total score and project level.</h2>
+
 <div class="scorer">
   <div class="header-row">
     <div class="header-cell"></div>
@@ -43,17 +297,18 @@
   <div id="rows"></div>
   <div class="footer">
     <div class="total-block">
-      <div class="total-label">Total score</div>
+      <div class="total-label">Total</div>
       <div class="total-score" id="total-score">—</div>
     </div>
+    <div class="sep"></div>
     <div class="level-block" id="level-block">
-      <div class="level-empty">Score to see level</div>
+      <div class="level-empty">Select dimensions to score</div>
     </div>
     <div class="ranges">
-      12–18 → Level 1 — Production<br>
-      19–28 → Level 2 — Campaign<br>
-      29–38 → Level 3 — Strategic<br>
-      39–48 → Level 4 — Transformative
+      <span class="r1">12–18</span> Level 1 — Production<br>
+      <span class="r2">19–28</span> Level 2 — Campaign<br>
+      <span class="r3">29–38</span> Level 3 — Strategic<br>
+      <span class="r4">39–48</span> Level 4 — Transformative
     </div>
     <button class="reset-btn" onclick="resetAll()">↺ Reset</button>
   </div>
@@ -61,67 +316,86 @@
 </div>
 
 <script>
-const dimensions=[
-  {label:"Strategic thinking required",options:["Execution only","Some thinking","Strategic framing","Business transformation"]},
-  {label:"Creative complexity",options:["Simple edits","Moderate customization","Custom concepts","Foundational system"]},
-  {label:"Net-new concepting",options:["None","Light","Yes","Extensive"]},
-  {label:"Stakeholder count",options:["1–2","3–4","5–6","7+"]},
-  {label:"Decision complexity (BPD)",options:["1","2–4","5–6","7+"]},
-  {label:"Decision complexity (client)",options:["1–2","2–4","5–6","7+"]},
-  {label:"Revision expectation",options:["1–2 rounds","2–3 rounds","3–4 rounds","Ongoing"]},
-  {label:"Timeline pressure",options:["Flexible","Moderate","Tight","Unrealistic"]},
-  {label:"Scope volatility risk",options:["Locked","Some risk","Likely changes","Guaranteed"]},
-  {label:"Visibility / impact",options:["Low","Moderate","High","Very high"]},
-  {label:"PM complexity",options:["Light tracking","Standard","Multi-stream","Program-level"]},
-  {label:"Creative staffing level",options:["Maker","Lead + maker","CD-led","Multi-CD / exec"]},
+const dimensions = [
+  { label: "Strategic thinking required", options: ["Execution only", "Some thinking", "Strategic framing", "Business transformation"] },
+  { label: "Creative complexity",         options: ["Simple edits", "Moderate customization", "Custom concepts", "Foundational system"] },
+  { label: "Net-new concepting",          options: ["None", "Light", "Yes", "Extensive"] },
+  { label: "Stakeholder count",           options: ["1–2", "3–4", "5–6", "7+"] },
+  { label: "Decision complexity (BPD)",   options: ["1", "2–4", "5–6", "7+"] },
+  { label: "Decision complexity (client)",options: ["1–2", "2–4", "5–6", "7+"] },
+  { label: "Revision expectation",        options: ["1–2 rounds", "2–3 rounds", "3–4 rounds", "Ongoing"] },
+  { label: "Timeline pressure",           options: ["Flexible", "Moderate", "Tight", "Unrealistic"] },
+  { label: "Scope volatility risk",       options: ["Locked", "Some risk", "Likely changes", "Guaranteed"] },
+  { label: "Visibility / impact",         options: ["Low", "Moderate", "High", "Very high"] },
+  { label: "PM complexity",               options: ["Light tracking", "Standard", "Multi-stream", "Program-level"] },
+  { label: "Creative staffing level",     options: ["Maker", "Lead + maker", "CD-led", "Multi-CD / exec"] },
 ];
 
-const selections=new Array(dimensions.length).fill(null);
+const selections = new Array(dimensions.length).fill(null);
 
-function render(){
-  const container=document.getElementById('rows');
-  container.innerHTML='';
-  dimensions.forEach((dim,i)=>{
-    const row=document.createElement('div');
-    row.className='row';
-    const lbl=document.createElement('div');
-    lbl.className='row-label';
-    lbl.textContent=dim.label;
+function render() {
+  const container = document.getElementById('rows');
+  container.innerHTML = '';
+  dimensions.forEach((dim, i) => {
+    const row = document.createElement('div');
+    row.className = 'row';
+
+    const lbl = document.createElement('div');
+    lbl.className = 'row-label';
+    lbl.textContent = dim.label;
     row.appendChild(lbl);
-    dim.options.forEach((opt,j)=>{
-      const cell=document.createElement('div');
-      cell.className='cell'+(selections[i]===j?' selected':'');
-      cell.textContent=opt;
-      cell.onclick=()=>{selections[i]=(selections[i]===j?null:j);update();render();}
+
+    dim.options.forEach((opt, j) => {
+      const cell = document.createElement('div');
+      cell.className = 'cell' + (selections[i] === j ? ' selected' : '');
+      cell.textContent = opt;
+      cell.onclick = () => {
+        selections[i] = (selections[i] === j ? null : j);
+        update(); render();
+      };
       row.appendChild(cell);
     });
-    const sc=document.createElement('div');
-    sc.className='score-cell'+(selections[i]!==null?' filled':'');
-    sc.textContent=selections[i]!==null?(selections[i]+1):'—';
+
+    const sc = document.createElement('div');
+    sc.className = 'score-cell' + (selections[i] !== null ? ' filled' : '');
+    sc.textContent = selections[i] !== null ? (selections[i] + 1) : '—';
     row.appendChild(sc);
+
     container.appendChild(row);
   });
   update();
 }
 
-function update(){
-  const filled=selections.filter(s=>s!==null);
-  const ts=document.getElementById('total-score');
-  const lb=document.getElementById('level-block');
-  if(filled.length===0){ts.textContent='—';lb.innerHTML='<div class="level-empty">Score to see level</div>';return;}
-  const total=filled.reduce((a,v)=>a+v+1,0);
-  ts.textContent=filled.length<dimensions.length?total+'*':total;
-  let name='',cls='';
-  if(total<=18){name='Level 1 — Production';cls='l1';}
-  else if(total<=28){name='Level 2 — Campaign';cls='l2';}
-  else if(total<=38){name='Level 3 — Strategic';cls='l3';}
-  else{name='Level 4 — Transformative';cls='l4';}
-  const missing=dimensions.length-filled.length;
-  const note=missing>0?`<div style="font-size:12px;color:var(--color-text-secondary);margin-top:4px;">${missing} dimension${missing>1?'s':''} not yet scored</div>`:'';
-  lb.innerHTML=`<div class="level-name ${cls}">${name}</div>${note}`;
+function update() {
+  const filled = selections.filter(s => s !== null);
+  const ts = document.getElementById('total-score');
+  const lb = document.getElementById('level-block');
+
+  if (filled.length === 0) {
+    ts.textContent = '—';
+    lb.innerHTML = '<div class="level-empty">Select dimensions to score</div>';
+    return;
+  }
+
+  const total = filled.reduce((a, v) => a + v + 1, 0);
+  ts.textContent = filled.length < dimensions.length ? total + '*' : total;
+
+  let name = '', cls = '';
+  if      (total <= 18) { name = 'Level 1 — Production';    cls = 'l1'; }
+  else if (total <= 28) { name = 'Level 2 — Campaign';      cls = 'l2'; }
+  else if (total <= 38) { name = 'Level 3 — Strategic';     cls = 'l3'; }
+  else                  { name = 'Level 4 — Transformative'; cls = 'l4'; }
+
+  const missing = dimensions.length - filled.length;
+  const note = missing > 0
+    ? `<div class="level-note">${missing} dimension${missing > 1 ? 's' : ''} not yet scored</div>`
+    : '';
+  lb.innerHTML = `<div class="level-name ${cls}">${name}</div>${note}`;
 }
 
-function resetAll(){selections.fill(null);render();}
+function resetAll() { selections.fill(null); render(); }
 
 render();
 </script>
+</body>
+</html>
